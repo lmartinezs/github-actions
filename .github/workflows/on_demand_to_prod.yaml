@@ -23,10 +23,10 @@ jobs:
           number: ${{ inputs.pr_number_id }}
           method: merge
           repo: ${{ github.repository }}
-      - name: Close Pull
-        uses: peter-evans/close-pull@v2
-        with:
-          pull-request-number: ${{ inputs.pr_number_id }}
-          #pull-request-number: 149
-          comment: Cerrando PR
-          delete-branch: false
+      #- name: Close Pull
+      #  uses: peter-evans/close-pull@v2
+      #  with:
+      #    pull-request-number: ${{ inputs.pr_number_id }}
+      #    #pull-request-number: 149
+      #    comment: Cerrando PR
+      #    delete-branch: false
