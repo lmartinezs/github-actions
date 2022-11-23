@@ -1,0 +1,32 @@
+name: Publish to prod on demand
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number_id:
+        description: 'PR id to close'
+        required: true
+jobs:
+  
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SKIP_PREFLIGHT_CHECK: true
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:    
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm install          
+      - name: Close Pull
+        uses: peter-evans/close-pull@v2
+        with:
+          pull-request-number: ${{ inputs.pr_number_id }}
+          #pull-request-number: 149
+          comment: Cerrando PR
+          delete-branch: false
