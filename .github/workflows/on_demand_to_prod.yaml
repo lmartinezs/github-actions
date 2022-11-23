@@ -16,6 +16,13 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."  
+      - name: Merge Pull Request
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ inputs.pr_number_id }}
+          method: merge
+          repo: ${{ github.repository }}
       - name: Close Pull
         uses: peter-evans/close-pull@v2
         with:
