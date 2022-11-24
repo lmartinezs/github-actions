@@ -8,4 +8,16 @@ jobs:
     if: "!github.event.release.prerelease"
     runs-on: ubuntu-latest
     steps:
-    - run: echo "release created on ${{ github.repository }} repository" 
+    - run: echo "release created on ${{ github.repository }} repository"
+    - run: |
+        NEW_VERSION=`echo $PRE_RELEASE_TAG | sed 's/version-//'`
+        echo $NEW_VERSION
+        PULL_VERSION=rc-`echo $NEW_VERSION`
+        IMAGE_SOURCE=$DOCKER_REGISTRY/$REPOSITORY:$PULL_VERSION
+        docker pull $IMAGE_SOURCE
+        docker tag $IMAGE_SOURCE $DOCKER_REGISTRY/$REPOSITORY:$NEW_VERSION
+        docker push $DOCKER_REGISTRY/$REPOSITORY:$NEW_VERSION
+      env:
+        PRE_RELEASE_TAG: ${{ github.event.release.tag_name }}
+        DOCKER_REGISTRY: ecr.us-east-1.amazonaws.com
+        REPOSITORY: demo-repo
