@@ -8,9 +8,4 @@ jobs:
     if: "!github.event.release.prerelease"
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2.3.4
-      with:
-        token: ${{ secrets.GH_TOKEN }}
-        submodules: recursive
-        fetch-depth: 0
     - run: echo "release created on ${{ github.repository }} repository" 
