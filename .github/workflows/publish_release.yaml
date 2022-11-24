@@ -13,3 +13,4 @@ jobs:
         token: ${{ secrets.GH_TOKEN }}
         submodules: recursive
         fetch-depth: 0
+    - run: echo "release created on ${{ github.repository }} repository" 
