@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo '${{ toJSON(github) }}'
-      - name: "Get branch name and save to env"
+      - name: "Get branch name and save to envv"
         env:
           IS_PR: ${{ github.EVENT_NAME == 'pull_request' }}
         run: |
