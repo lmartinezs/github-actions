@@ -1,4 +1,4 @@
 # github-actions
 Test Github Actions
 
-test PRRRr
+test PR
