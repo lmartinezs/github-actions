@@ -1,0 +1,21 @@
+name: Publish to production
+
+on:
+  push:
+    branches:
+      - production
+      - main
+jobs:
+  pushtoprod:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+    - name: Checkout latest release tag
+      run: |
+          echo "LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+          echo "LATEST_TAG=${LATEST_TAG}"
+          echo "GIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
+          echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV      
