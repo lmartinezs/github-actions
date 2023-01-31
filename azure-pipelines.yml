@@ -46,7 +46,7 @@ stages:
             echo $PRE_RELEASE
           displayName: Check open pre-release
           env:
-            GH_TOKEN: $(gh.token)
+            GH_TOKEN: $(gh_token)
 
         - script: | 
             echo $(GIT_COMMIT)
