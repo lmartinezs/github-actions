@@ -17,6 +17,7 @@ resources:
 variables:
   GIT_COMMIT: $(Build.SourceVersion)
   GIT_BRANCH: $(Build.SourceBranchName)
+  PRE_RELEASE: new_one
 
 stages:
   - stage: build
@@ -29,6 +30,7 @@ stages:
           displayName: 'Run a one-line script'
         #- checkout: githubrepo
         - script: |
+            gh auth login --with-token
             if [[ $(gh release list | grep -E 'Draft|Pre-release' | wc -l) -ne 0 ]]; then
               echo "There is an open Pre-release"
               PRE_RELEASE=current_one
@@ -39,11 +41,16 @@ stages:
             else
               PRE_RELEASE=new_one
             fi
-            echo "PRE_RELEASE=$PRE_RELEASE"  >> $GITHUB_ENV
+            #echo "PRE_RELEASE=$PRE_RELEASE"  >> $GITHUB_ENV
+            echo "##vso[task.setvariable variable=PRE_RELEASE]$PRE_RELEASE"
             echo $PRE_RELEASE
           displayName: Check open pre-release
+          env:
+            GH_TOKEN: $(gh.token)
 
         - script: | 
             echo $(GIT_COMMIT)
             echo $(GIT_BRANCH)
+            echo $(PRE_RELEASE)
+
           displayName: 'Run a multi-line script'
