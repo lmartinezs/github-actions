@@ -1,33 +1,25 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+trigger: none
 
-trigger:
-- master
+parameters:
+  - name: VM
+    displayName: VM Agent Operating System
+    default: ubuntu-latest
+    values:
+      - ubuntu-latest
+      - windows-latest
 
-pool:
-  vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+  - stage: build
+    pool:
+      vmImage: ${{ parameters.VM }}
+    jobs:
+      - job: build
+        steps:
+        - script: echo Hello, world!
+          displayName: 'Run a one-line script'
 
-- script: echo "release created on ${{ github.repository }} repository"
-- script: |
-        PRE_RELEASE_TAG=${{ github.event.release.tag_name }}
-        REPOSITORY=ecr
-        DOCKER_REGISTRY="demo-repo"
-        NEW_VERSION=`echo $PRE_RELEASE_TAG | sed 's/version-//'`
-        echo $NEW_VERSION
-        PULL_VERSION=rc-`echo $NEW_VERSION`
-        IMAGE_SOURCE=$DOCKER_REGISTRY/$REPOSITORY:$PULL_VERSION
-        echo 'pull' $IMAGE_SOURCE
-        echo 'tag' $IMAGE_SOURCE $DOCKER_REGISTRY/$REPOSITORY:$NEW_VERSION
-        echo 'push' $DOCKER_REGISTRY/$REPOSITORY:$NEW_VERSION
-      
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+        - script: |
+            echo Add other tasks to build, test, and deploy your project.
+            echo See https://aka.ms/yaml
+          displayName: 'Run a multi-line script'
