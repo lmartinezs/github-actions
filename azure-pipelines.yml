@@ -14,6 +14,8 @@ resources:
     type: github
     endpoint: lmartinezs
     name: lmartinezs/github-actions
+variables:
+  GIT_COMMIT: $(Build.SourceVersion)
 
 stages:
   - stage: build
@@ -27,7 +29,7 @@ stages:
         - checkout: githubrepo
 
         - script: | 
-            echo $(Build.SourceVersion) build-version
+            echo $(Build)
             echo Add other tasks to build, test, and deploy your project.
             echo See https://aka.ms/yaml
           displayName: 'Run a multi-line script'
