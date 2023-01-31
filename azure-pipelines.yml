@@ -8,7 +8,12 @@ parameters:
       - ubuntu-latest
       - windows-latest
   - name: hascommit
-
+resources:
+  repositories:
+  - repository: githubrepo # The name used to reference this repository in the checkout step
+    type: github
+    endpoint: lmartinezs
+    name: lmartinezs/github-actions
 
 stages:
   - stage: build
@@ -19,6 +24,7 @@ stages:
         steps:
         - script: echo Hello, world!
           displayName: 'Run a one-line script'
+        - checkout: githubrepo
 
         - script: | 
             echo $(hascommit)
