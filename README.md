@@ -6,5 +6,3 @@ release
 release 1
 
 test dev
-
-test 2
