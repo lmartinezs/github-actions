@@ -3,11 +3,10 @@ on:
   push:
 jobs:
   MyRun:
-    runs-on: ubuntu-latest
-    continue-on-error: true    
+    runs-on: ubuntu-latest    
     steps:
       - name: Step One
-        if: ${{ always() }}
+        continue-on-error: true    
         run: curl --fail -o dates.csv https://doesnotexist.com/dates.csv
       - name: Step Two
         run: date >> dates.csv
