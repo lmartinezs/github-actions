@@ -11,3 +11,9 @@ jobs:
         run: curl --fail -o dates.csv https://doesnotexist.com/dates.csv
       - name: Step Two
         run: date >> dates.csv
+  MyRun2:
+    runs-on: ubuntu-latest    
+    steps:
+      - name: Step One
+        run: echo "success"
+      
