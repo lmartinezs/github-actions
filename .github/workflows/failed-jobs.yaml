@@ -15,6 +15,7 @@ jobs:
 
     - name: Ejecutar comandos o tareas
       run: |
+        exit 1
         # Coloca aquí los comandos o tareas que deseas ejecutar en el job_1
 
   job_2:
