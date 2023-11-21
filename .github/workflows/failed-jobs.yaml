@@ -1,0 +1,79 @@
+name: failed jobs
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  job_1:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v2
+
+    - name: Ejecutar comandos o tareas
+      run: |
+        # Coloca aquí los comandos o tareas que deseas ejecutar en el job_1
+
+  job_2:
+    runs-on: ubuntu-latest
+
+    needs: job_1
+
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v2
+
+    - name: Ejecutar comandos o tareas
+      run: |
+        # Coloca aquí los comandos o tareas que deseas ejecutar en el job_2
+
+  job_3:
+    runs-on: ubuntu-latest
+
+    needs: job_2
+
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v2
+
+    - name: Ejecutar comandos o tareas
+      run: |
+        # Coloca aquí los comandos o tareas que deseas ejecutar en el job_3
+
+  job_4:
+    runs-on: ubuntu-latest
+
+    needs: job_3
+
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v2
+
+    - name: Ejecutar comandos o tareas
+      run: |
+        # Coloca aquí los comandos o tareas que deseas ejecutar en el job_4
+
+    - name: Validar el estado de los trabajos anteriores
+      run: |
+        for JOB_ID in $(seq $((GITHUB_RUN_ID-1)) -1 1); do
+          JOB_STATUS=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+                        "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/jobs/$JOB_ID" \
+                        | jq -r '.conclusion')
+
+          if [ "$JOB_STATUS" == "failure" ]; then
+            echo "El trabajo $JOB_ID terminó con error."
+
+            # Obtener el nombre del paso que falló
+            FAILED_STEP=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+                            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/jobs/$JOB_ID" \
+                            | jq -r '.steps[] | select(.conclusion == "failure") | .name')
+
+            echo "El paso que falló en el trabajo $JOB_ID es: $FAILED_STEP"
+            exit 1
+          fi
+        done
+
+        echo "Todos los trabajos se ejecutaron con éxito."
